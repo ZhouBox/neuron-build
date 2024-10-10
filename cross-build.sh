@@ -68,7 +68,7 @@ function compile_source_with_tag() {
     git submodule update --init
     mkdir build && cd build
     cmake .. -DCMAKE_BUILD_TYPE=$build_type -DDISABLE_UT=ON \
-	-DTOOL_DIR=$tool_dir -DCOMPILER_PREFIX=$vendor \
+	-DTOOL_DIR=$tool_dir -DCOMPILER_PREFIX=$vendor -DUSE_MQTT_SM=ON \
 	-DCMAKE_SYSTEM_PROCESSOR=$arch -DLIBRARY_DIR=$library \
 	-DCMAKE_TOOLCHAIN_FILE=../cmake/cross.cmake
 
