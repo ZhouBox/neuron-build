@@ -125,7 +125,7 @@ function build_tassl() {
             compile_prefix=$home/buildroot/$vendor/output/host/bin/$vendor-;;
     esac
     cd $library
-    git clone -b main https://github.com/jntass/TASSL-1.1.1.git openssl
+    git clone -b master https://github.com/jntass/TASSL-1.1.1.git openssl
     cd openssl
     mkdir -p $install_dir/openssl/ssl
     platform=linux-$arch
