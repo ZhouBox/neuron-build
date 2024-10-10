@@ -116,6 +116,32 @@ function build_openssl() {
     make clean
 }
 
+function build_tassl() {
+    echo "Installing tassl (1.1.1)"
+    case $cross in
+        (true)  
+            compile_prefix=$vendor-;;
+        (false) 
+            compile_prefix=$home/buildroot/$vendor/output/host/bin/$vendor-;;
+    esac
+    cd $library
+    git clone -b main https://github.com/jntass/TASSL-1.1.1.git openssl
+    cd openssl
+    mkdir -p $install_dir/openssl/ssl
+    platform=linux-$arch
+    if [[ $arch == "riscv64" ]]; then
+      platform=linux-generic64
+    fi
+    ./Configure $platform no-asm no-async shared \
+        --prefix=$install_dir \
+        --openssldir=$install_dir/openssl/ssl \
+        --cross-compile-prefix=$compile_prefix
+    make clean
+    make -j4
+    make install_sw
+    make clean
+}
+
 function build_zlog() {
     cd $library
     git clone -b 1.2.15 https://github.com/HardySimpson/zlog.git
@@ -188,7 +214,7 @@ mkdir -p $install_dir/include
 mkdir -p $install_dir/lib
 
 build_zlog
-build_openssl 
+build_tassl 
 build_sqlite3
 build_protobuf
 build_protobuf-c
@@ -199,4 +225,4 @@ compile_source_with_tag google/googletest.git googletest release-1.11.0
 compile_source_with_tag benmcollins/libjwt.git libjwt v1.13.1 "-DENABLE_PIC=ON -DBUILD_SHARED_LIBS=OFF"
 compile_source_with_tag ARMmbed/mbedtls.git mbedtls v2.16.12 "-DCMAKE_BUILD_TYPE=Release -DUSE_SHARED_MBEDTLS_LIBRARY=OFF -DENABLE_TESTING=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
 compile_source_with_tag neugates/open62541.git open62541 neuron-1.2.9 "-DBUILD_SHARED_LIBS=OFF -DUA_ENABLE_ENCRYPTION=ON -DUA_ENABLE_ENCRYPTION_OPENSSL=ON -DUA_ENABLE_AMALGAMATION=ON -DUA_BUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DUA_LOGLEVEL=500 -DCMAKE_BUILD_TYPE=Release"
-compile_source_with_tag neugates/NanoSDK.git NanoSDK neuron "-DBUILD_SHARED_LIBS=OFF -DNNG_TESTS=OFF -DNNG_ENABLE_SQLITE=ON -DNNG_ENABLE_TLS=ON"
+compile_source_with_tag emqx/NanoSDK_Mirror.git NanoSDK nanwang-dev "-DBUILD_SHARED_LIBS=OFF -DNNG_TESTS=OFF -DNNG_ENABLE_SQLITE=ON -DNNG_ENABLE_TLS=ON"
