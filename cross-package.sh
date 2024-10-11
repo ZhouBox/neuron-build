@@ -3,7 +3,7 @@
 set -e
 
 home=/home/neuron
-branch=main
+branch=sm
 vendor=?
 arch=?
 version=?
