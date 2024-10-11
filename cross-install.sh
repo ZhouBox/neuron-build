@@ -146,7 +146,7 @@ function build_tassl() {
     if [[ $arch == "riscv64" ]]; then
       platform=linux-generic64
     fi
-    ./Configure $platform no-asm no-async shared \
+    ./Configure $platform shared \
         --prefix=$install_dir \
         --openssldir=$install_dir/openssl/ssl \
         --cross-compile-prefix=$compile_prefix
@@ -220,24 +220,24 @@ function build_libxml2(){
     make install
 }
 
-# sudo rm -rf $library
-# sudo rm -rf $install_dir
-# mkdir -p $library
-# mkdir -p $install_dir/bin
-# mkdir -p $install_dir/include
-# mkdir -p $install_dir/lib
+sudo rm -rf $library
+sudo rm -rf $install_dir
+mkdir -p $library
+mkdir -p $install_dir/bin
+mkdir -p $install_dir/include
+mkdir -p $install_dir/lib
 
-# build_libxml2
-# build_zlog
-# build_tassl 
-# build_sqlite3
-# build_protobuf
-# build_protobuf-c
+build_libxml2
+build_zlog
+build_tassl 
+build_sqlite3
+build_protobuf
+build_protobuf-c
 
 
-# compile_source neugates/jansson.git jansson "-DJANSSON_BUILD_DOCS=OFF -DJANSSON_EXAMPLES=OFF"
-# compile_source_with_tag google/googletest.git googletest release-1.11.0
-# compile_source_with_tag benmcollins/libjwt.git libjwt v1.13.1 "-DENABLE_PIC=ON -DBUILD_SHARED_LIBS=OFF"
-# compile_source_with_tag ARMmbed/mbedtls.git mbedtls v2.16.12 "-DCMAKE_BUILD_TYPE=Release -DUSE_SHARED_MBEDTLS_LIBRARY=OFF -DENABLE_TESTING=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-# compile_source_with_tag neugates/open62541.git open62541 neuron-1.2.9 "-DBUILD_SHARED_LIBS=OFF -DUA_ENABLE_ENCRYPTION=ON -DUA_ENABLE_ENCRYPTION_OPENSSL=ON -DUA_ENABLE_AMALGAMATION=ON -DUA_BUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DUA_LOGLEVEL=500 -DCMAKE_BUILD_TYPE=Release"
-compile_source_with_tag2 emqx/NanoSDK_Mirror.git NanoSDK nanwang-dev "-DBUILD_SHARED_LIBS=OFF -DNNG_TESTS=OFF -DNNG_ENABLE_SQLITE=ON -DNNG_ENABLE_TLS=ON -DNNG_TLS_ENGINE=open -DOPENSSL_ROOT_DIR=$library"
+compile_source neugates/jansson.git jansson "-DJANSSON_BUILD_DOCS=OFF -DJANSSON_EXAMPLES=OFF"
+compile_source_with_tag google/googletest.git googletest release-1.11.0
+compile_source_with_tag benmcollins/libjwt.git libjwt v1.13.1 "-DENABLE_PIC=ON -DBUILD_SHARED_LIBS=OFF"
+compile_source_with_tag ARMmbed/mbedtls.git mbedtls v2.16.12 "-DCMAKE_BUILD_TYPE=Release -DUSE_SHARED_MBEDTLS_LIBRARY=OFF -DENABLE_TESTING=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
+compile_source_with_tag neugates/open62541.git open62541 neuron-1.2.9 "-DBUILD_SHARED_LIBS=OFF -DUA_ENABLE_ENCRYPTION=ON -DUA_ENABLE_ENCRYPTION_OPENSSL=ON -DUA_ENABLE_AMALGAMATION=ON -DUA_BUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DUA_LOGLEVEL=500 -DCMAKE_BUILD_TYPE=Release"
+compile_source_with_tag2 emqx/NanoSDK_Mirror.git NanoSDK nanwang-dev "-DNNG_ENABLE_QUIC=OFF -DNNG_ENABLE_TLS=ON -DNNG_TLS_ENGINE=open -DOPENSSL_ROOT_DIR=$library -DNNG_ENABLE_SQLITE=ON -DBUILD_DEMO=ON -DNNG_ENABLE_SCRAM=ON -DNNG_TESTS=OFF -DBUILD_SHARED_LIBS=OFF"
