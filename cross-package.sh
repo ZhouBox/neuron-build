@@ -181,7 +181,7 @@ case $custom in
         python3 update_default_plugins.py $package_dir/config/default_plugins.json "libplugin-iec104.so";;
     (nw)
         cp -f $neuron_modules_dir/build/plugins/libplugin-mqtt-sm.so \
-            $package_dir/plugins/libplugin-mqtt-sm.so;;
+            $package_dir/plugins/libplugin-mqtt.so;;
     (default)
         echo "no custom";;
 esac
