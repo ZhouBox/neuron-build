@@ -179,6 +179,8 @@ case $custom in
             $package_dir/plugins/;
         python3 update_default_plugins.py $package_dir/config/default_plugins.json "libplugin-iec104.so";;
     (nw)
+        mv  $neuron_modules_dir/build/plugins/schema/mqtt-sm.json \
+            $package_dir/plugins/schema/mqtt.json;
         cp -f $neuron_modules_dir/build/plugins/libplugin-mqtt-sm.so \
             $package_dir/plugins/libplugin-mqtt.so;;
     (default)
