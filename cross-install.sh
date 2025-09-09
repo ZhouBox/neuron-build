@@ -11,8 +11,9 @@ gcc=?
 gxx=?
 install_dir=?
 cross=false
+custom=""
 
-while getopts ":a:v:c:" OPT; do
+while getopts ":a:v:c:z:" OPT; do
     case ${OPT} in
         a)
             arch=$OPTARG
@@ -23,17 +24,25 @@ while getopts ":a:v:c:" OPT; do
         c)
             cross=$OPTARG
             ;;
+        z)
+            custom=$OPTARG
+            ;;
     esac
 done
 
-case $cross in
-    (true)  
-        gcc=$vendor-gcc;
-        gxx=$vendor-g++;;
-    (false) 
-        gcc=$home/buildroot/$vendor/output/host/bin/$vendor-gcc;
-        gxx=$home/buildroot/$vendor/output/host/bin/$vendor-g++;;
-esac
+if [ "$custom" == "zhzk" ]; then
+    gcc=/opt/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin/$vendor-gcc
+    gxx=/opt/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin/$vendor-g++
+else
+    case $cross in
+        (true)  
+            gcc=$vendor-gcc;
+            gxx=$vendor-g++;;
+        (false) 
+            gcc=$home/buildroot/$vendor/output/host/bin/$vendor-gcc;
+            gxx=$home/buildroot/$vendor/output/host/bin/$vendor-g++;;
+    esac
+fi
 
 install_dir=$home/$branch/libs/$vendor/
 library=$home/$branch/library/$vendor/
@@ -92,12 +101,16 @@ function compile_source_with_tag() {
 
 function build_openssl() {
     echo "Installing openssl (1.1.1)"
-    case $cross in
-        (true)  
-            compile_prefix=$vendor-;;
-        (false) 
-            compile_prefix=$home/buildroot/$vendor/output/host/bin/$vendor-;;
-    esac
+    if [ "$custom" == "zhzk" ]; then
+        compile_prefix=$vendor-
+    else
+        case $cross in
+            (true)  
+                compile_prefix=$vendor-;;
+            (false) 
+                compile_prefix=$home/buildroot/$vendor/output/host/bin/$vendor-;;
+        esac
+    fi
     cd $library
     git clone -b OpenSSL_1_1_1 https://github.com/openssl/openssl.git
     cd openssl
@@ -198,5 +211,5 @@ compile_source neugates/jansson.git jansson "-DJANSSON_BUILD_DOCS=OFF -DJANSSON_
 compile_source_with_tag google/googletest.git googletest release-1.11.0
 compile_source_with_tag benmcollins/libjwt.git libjwt v1.13.1 "-DENABLE_PIC=ON -DBUILD_SHARED_LIBS=OFF"
 compile_source_with_tag ARMmbed/mbedtls.git mbedtls v2.16.12 "-DCMAKE_BUILD_TYPE=Release -DUSE_SHARED_MBEDTLS_LIBRARY=OFF -DENABLE_TESTING=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON"
-compile_source_with_tag neugates/open62541.git open62541 neuron-1.2.9 "-DBUILD_SHARED_LIBS=OFF -DUA_ENABLE_ENCRYPTION=ON -DUA_ENABLE_ENCRYPTION_OPENSSL=ON -DUA_ENABLE_AMALGAMATION=ON -DUA_BUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DUA_LOGLEVEL=500 -DCMAKE_BUILD_TYPE=Release"
+compile_source_with_tag neugates/open62541.git open62541 neuron-1.2.10 "-DBUILD_SHARED_LIBS=OFF -DUA_ENABLE_ENCRYPTION=ON -DUA_ENABLE_ENCRYPTION_OPENSSL=ON -DUA_ENABLE_AMALGAMATION=ON -DUA_BUILD_EXAMPLES=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DUA_LOGLEVEL=500 -DCMAKE_BUILD_TYPE=Release"
 compile_source_with_tag neugates/NanoSDK.git NanoSDK neuron "-DBUILD_SHARED_LIBS=OFF -DNNG_TESTS=OFF -DNNG_ENABLE_SQLITE=ON -DNNG_ENABLE_TLS=ON"
