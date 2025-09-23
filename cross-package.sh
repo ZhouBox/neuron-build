@@ -55,7 +55,7 @@ case $build_type in
 esac
 
 
-library=$home/$branch/libs/$vendor
+library=$home/main/libs/$vendor
 script_dir="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P  )"
 
 
