@@ -3,8 +3,8 @@
 set -e
 
 home=/home/neuron
-bdb=main
-library=$home/$bdb/libs
+bdb=opcua_server
+library=$home/main/libs
 vendor=?
 arch=?
 branch=?

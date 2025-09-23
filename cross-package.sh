@@ -3,7 +3,7 @@
 set -e
 
 home=/home/neuron
-branch=main
+branch=opcua_server
 vendor=?
 arch=?
 version=?
