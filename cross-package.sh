@@ -76,9 +76,7 @@ cp $neuron_dir/build/libneuron-base.so $package_dir/
 cp $neuron_modules_dir/build/liblicense.so $package_dir/
 
 cp $neuron_dir/build/neuron $package_dir/
-cp $neuron_dir/build/config/neuron.key \
-    $neuron_dir/build/config/neuron.pem \
-    $neuron_dir/build/config/neuron.json \
+cp  $neuron_dir/build/config/neuron.json \
     $neuron_dir/build/config/zlog.conf \
     $neuron_dir/build/config/dev.conf \
     $neuron_dir/build/config/*.sql \
@@ -108,6 +106,7 @@ cp $neuron_modules_dir/build/plugins/libplugin-websocket.so \
         $neuron_modules_dir/build/plugins/libplugin-EtherNet-IP.so \
         $neuron_modules_dir/build/plugins/libplugin-Profinet.so \
         $neuron_modules_dir/build/plugins/libplugin-qna3e.so \
+        $neuron_modules_dir/build/plugins/libplugin-qna4e.so \
         $neuron_modules_dir/build/plugins/libplugin-a1e.so \
         $neuron_modules_dir/build/plugins/libplugin-fx.so \
         $neuron_modules_dir/build/plugins/libplugin-s7comm.so \
@@ -180,6 +179,8 @@ case $custom in
             $package_dir/plugins/;
         python3 update_default_plugins.py $package_dir/config/default_plugins.json "libplugin-iec104.so";;
     (nw)
+        mv  $neuron_modules_dir/build/plugins/schema/mqtt-sm.json \
+            $package_dir/plugins/schema/mqtt.json;
         cp -f $neuron_modules_dir/build/plugins/libplugin-mqtt-sm.so \
             $package_dir/plugins/libplugin-mqtt.so;;
     (default)
